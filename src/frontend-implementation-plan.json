@@ -1,0 +1,208 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Teen Patti Classic (Virtual Coins) — Frontend",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add Internet Identity login UI, profile setup (display name), and show persistent virtual-coin balance with clear 'virtual coins only' messaging.",
+      "acceptanceCriteria": [
+        "User can sign in/out via Internet Identity.",
+        "On first login, a player profile is created automatically.",
+        "Player coin balance is stored in the backend and persists across refreshes.",
+        "All user-facing text is in English and clearly states 'Virtual coins only' (no cash value)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the root app shell that gates all in-app screens behind Internet Identity authentication, includes a sign-in/out control, and routes between Login/Lobby/Matchmaking/Table flows. Use the selected authorization component patterns for login-state gating and cache clearing on logout; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginPanel.tsx",
+          "operation": "create",
+          "description": "Create a login screen/panel that uses Internet Identity to sign in and displays English-only copy including 'Virtual coins only (no cash value)'. Use the selected authorization component guidance for login/logout UI behavior; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useUserProfile.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for fetching/saving the current user's profile (displayName/coins) using the backend interface, including a 'prevent modal flash' loading pattern described by the selected authorization component; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/profile/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a first-login profile setup dialog to collect display name and save it, shown only when authenticated and the profile is missing. Use shadcn-ui Dialog/Form controls for consistent UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/lobby/BalanceBadge.tsx",
+          "operation": "create",
+          "description": "Create a small balance display component (virtual coins) for the Lobby and Table header, formatted from bigint and labeled clearly as virtual coins only."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement the public auto-matchmaking flow UI for 3-player tables: enter queue, show searching state, cancel search, and transition to table when formed.",
+      "acceptanceCriteria": [
+        "User can press a 'Play' button to enter matchmaking and see a 'Searching for players…' state.",
+        "When 3 players are available, a table is created and all 3 clients transition into the same game.",
+        "There is no UI or backend method for creating/joining private tables via code/link.",
+        "If a user cancels matchmaking, they are removed from the queue."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/screens/LobbyScreen.tsx",
+          "operation": "create",
+          "description": "Create the Lobby screen that shows balance and a single 'Play' button that enters matchmaking (no private room UI). Gate 'Play' behind the 18+ acknowledgement flow (REQ-7)."
+        },
+        {
+          "path": "frontend/src/screens/MatchmakingScreen.tsx",
+          "operation": "create",
+          "description": "Create the Matchmaking screen showing 'Searching for players…', queue size, a cancel action, and automatic transition to the Table screen when the backend reports the caller has an active table."
+        },
+        {
+          "path": "frontend/src/hooks/useMatchmaking.ts",
+          "operation": "create",
+          "description": "Add React Query hooks/mutations to join the queue, poll queue size, poll the caller's current table, and trigger navigation transitions when a table appears. Implement cancel by calling the backend action mechanism used for matchmaking cancellation (align the action string with the backend implementation)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire Lobby → Matchmaking → Table navigation so the 'Play' action reliably moves users into matchmaking and the app transitions to the game when a table is assigned. Ensure no routes/screens enable private-table creation/join."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Build a minimal, playable Teen Patti Classic 3-player table UI with turn-based actions, server-authoritative state reflected via polling, and a hand history panel.",
+      "acceptanceCriteria": [
+        "A new round automatically starts once a table is formed and all players are active.",
+        "Each player receives exactly 3 cards; the server is authoritative for the deck and deals.",
+        "Only the active player can act; invalid/out-of-turn actions are rejected by the backend.",
+        "At round end, winner is computed using standard Teen Patti hand ranking and the pot is awarded; balances update persistently.",
+        "A hand history panel shows key actions (bet/see/pack/show) for the current round."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/screens/TableScreen.tsx",
+          "operation": "create",
+          "description": "Create the Game Table UI screen: 3 seats, pot/current bet, turn indicator, player statuses (packed/seen), and action area (Pack/See/Bet/Call/Raise/Show). Keep layout responsive for mobile."
+        },
+        {
+          "path": "frontend/src/hooks/useTable.ts",
+          "operation": "create",
+          "description": "Add React Query polling for the current TableView and game settings (boot amount, inactivity timeout) to keep the UI updated without WebSockets."
+        },
+        {
+          "path": "frontend/src/components/table/ActionBar.tsx",
+          "operation": "create",
+          "description": "Implement action buttons that call the backend performAction(action: string) and enable/disable based on polled table state and backend-driven constraints available in the TableView (e.g., current turn, hasSeenCards, hasPacked). Use shadcn-ui Button components for consistent styling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/table/HandHistoryPanel.tsx",
+          "operation": "create",
+          "description": "Add a hand history panel that records and displays key actions for the current round. Implement a client-side event feed by appending entries on successful user actions and by inferring notable changes from successive table polls (e.g., packs/turn changes/pot changes) without relying on sockets."
+        },
+        {
+          "path": "frontend/src/components/table/CardDisplay.tsx",
+          "operation": "create",
+          "description": "Render card backs/faces for the local player (hidden until 'See' if applicable) and generic card backs for other players using the generated deck sprite asset at frontend/public/assets/generated/card-deck-sprite.dim_2048x2048.png."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Create the core frontend screens and flow wiring (Login, Lobby, Matchmaking, Table) using React Query polling for updates and mobile-responsive UI.",
+      "acceptanceCriteria": [
+        "User can navigate through Login → Lobby → Matchmaking → Table without dead-ends.",
+        "Table UI updates automatically as turns/actions happen (via polling).",
+        "Action buttons are enabled/disabled based on the user’s allowed actions as returned by the backend.",
+        "UI remains usable on mobile viewport widths (responsive layout)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Implement the top-level navigation/state machine (or routing) connecting Login → Lobby → Matchmaking → Table, including guards for unauthenticated users and fallbacks if no table exists."
+        },
+        {
+          "path": "frontend/src/hooks/usePollingIntervals.ts",
+          "operation": "create",
+          "description": "Centralize polling intervals/tuning for React Query (e.g., faster while matchmaking/in-table, slower in lobby) and reuse across hooks."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "create",
+          "description": "Create a shared layout wrapper with header (logo/balance/logout), consistent padding, and responsive container rules used across all screens."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a casino-card visual theme (non-blue/non-purple palette) consistently across all screens without copying Teen Patti Gold branding/assets.",
+      "acceptanceCriteria": [
+        "Theme is consistent across Login, Lobby, Matchmaking, and Table screens.",
+        "No Teen Patti Gold logos, names, or copied UI assets are used.",
+        "Primary palette is not blue/purple-dominant (e.g., deep red + gold + dark felt green is acceptable)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and theme tokens (CSS variables used by Tailwind/shadcn), using a deep red + gold + dark felt green palette and readable typography. Ensure no Teen Patti Gold naming/logos appear anywhere."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions (if needed) to support the chosen casino theme (felt green backgrounds, gold accents, red highlights) while remaining non-blue/non-purple dominant."
+        },
+        {
+          "path": "frontend/public/assets/generated/app-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated casino-style app logo asset (no text) at frontend/public/assets/generated/app-logo.dim_512x512.png and use it in the header/login UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/table-felt.dim_1024x1024.png",
+          "operation": "create",
+          "description": "Add the generated seamless felt texture asset at frontend/public/assets/generated/table-felt.dim_1024x1024.png and use it as a background texture for Lobby/Matchmaking/Table screens."
+        },
+        {
+          "path": "frontend/public/assets/generated/card-deck-sprite.dim_2048x2048.png",
+          "operation": "create",
+          "description": "Add the generated 52-card sprite sheet at frontend/public/assets/generated/card-deck-sprite.dim_2048x2048.png for card rendering in the Table UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/chips-sprite.dim_1024x1024.png",
+          "operation": "create",
+          "description": "Add the generated poker chips sprite at frontend/public/assets/generated/chips-sprite.dim_1024x1024.png for pot/bet visual accents."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add responsible-use disclaimers: 'Virtual coins only, no real-money gambling' and an 18+ acknowledgement required before first play, remembered per user.",
+      "acceptanceCriteria": [
+        "Before first entering matchmaking, the user must acknowledge an 18+ and virtual-coins-only disclaimer.",
+        "Disclaimer copy is in English.",
+        "Acknowledgement is remembered for the logged-in user (persisted in backend profile or frontend storage)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/responsible/DisclaimerGate.tsx",
+          "operation": "create",
+          "description": "Create an 18+ and 'Virtual coins only (no real-money gambling)' acknowledgement modal/screen shown before first entering matchmaking. Use shadcn-ui Dialog/Checkbox/Button components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useDisclaimerAck.ts",
+          "operation": "create",
+          "description": "Persist the acknowledgement per logged-in principal using frontend storage (e.g., localStorage keyed by principal string) and expose helpers to check/set acknowledgement."
+        },
+        {
+          "path": "frontend/src/screens/LobbyScreen.tsx",
+          "operation": "modify",
+          "description": "Gate the 'Play' button so it requires acknowledgement before calling joinQueue; show the disclaimer flow when needed and then proceed into matchmaking."
+        }
+      ]
+    }
+  ]
+}

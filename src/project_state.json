@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Plan to build a Teen Patti Gold–style online Teen Patti app with virtual coins (no real-money), featuring auto-matchmaking (no private tables).",
+  "architectural_notes": [
+    "Avoid real-money gambling; implement virtual-coin economy only (payment/withdrawal not in scope)."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Casino-style app logo with a gold border and abstract card motif (no text, no copied marks) (app-logo.dim_512x512.png)\n- Seamless green felt table texture with subtle pattern (table-felt.dim_1024x1024.png)\n- Set of 52 clean playing card faces in a modern flat style (card-deck-sprite.dim_2048x2048.png)\n- Poker chip set icons (red/green/black/gold) in a consistent illustrated style (chips-sprite.dim_1024x1024.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-login-and-a-basic-player-profile-principal-display-name-with-persistent-virtual-coin-balance-no-real-money-features",
+      "title": "Implement Internet Identity login and a basic player profile (principal, display name) with persistent virtual-coin balance (no real-money features).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-online-auto-matchmaking-flow-for-teen-patti-classic-that-seats-exactly-3-players-per-table-using-a-public-matchmaking-queue-no-private-rooms-tables",
+      "title": "Create an online auto-matchmaking flow for Teen Patti Classic that seats exactly 3 players per table using a public matchmaking queue (no private rooms/tables).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-teen-patti-classic-game-rules-with-turn-based-actions-and-a-minimal-playable-round-ante-boot-deal-3-cards-per-player-betting-turns-pack-fold-see-view-cards-bet-call-raise-and-show-to-end-the-hand-determine-winner-and-update-virtual-coin-balances-accordingly",
+      "title": "Implement Teen Patti Classic game rules with turn-based actions and a minimal, playable round: ante boot, deal 3 cards per player, betting turns, Pack (fold), See (view cards), Bet/Call/Raise, and Show to end the hand; determine winner and update virtual-coin balances accordingly.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-core-frontend-screens-and-flows-login-screen-lobby-balance-play-matchmaking-screen-and-game-table-ui-players-pot-turn-indicator-action-buttons-use-react-query-for-data-fetching-and-polling-to-reflect-game-updates-no-websockets",
+      "title": "Build the core frontend screens and flows: Login screen, Lobby (balance + Play), Matchmaking screen, and Game Table UI (players, pot, turn indicator, action buttons). Use React Query for data fetching and polling to reflect game updates (no WebSockets).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-establish-a-distinct-coherent-visual-theme-inspired-by-casino-card-aesthetics-but-not-copying-teen-patti-gold-branding-choose-a-non-blue-non-purple-palette-typography-and-component-styling-and-apply-consistently-across-all-screens",
+      "title": "Establish a distinct, coherent visual theme inspired by casino-card aesthetics but not copying Teen Patti Gold branding: choose a non-blue/non-purple palette, typography, and component styling, and apply consistently across all screens.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-basic-responsible-use-disclaimer-ui-text-clearly-state-virtual-coins-only-no-real-money-gambling-and-include-an-18-only-disclaimer-screen-or-modal-acknowledgement-before-first-play",
+      "title": "Add basic responsible-use/disclaimer UI text: clearly state 'Virtual coins only, no real-money gambling' and include an '18+ only' disclaimer screen or modal acknowledgement before first play.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Teen Patti Gold–style app (similar look/flow) using virtual coins only (no real-money entry).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Online auto-matchmaking tables for Teen Patti (no private room/table option specified).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Teen Patti Classic gameplay mode (no variations confirmed).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add backend game-state persistence and resilience: store tables, players, hands, and matchmaking queue in stable state; handle disconnects/timeouts with simple rules (e.g., auto-pack after a configurable inactivity period).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Teen Patti-style online game with virtual coins and auto-matchmaking",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

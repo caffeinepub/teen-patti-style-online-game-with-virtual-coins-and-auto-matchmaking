@@ -1,0 +1,101 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T23:03:47.147Z",
+  "summary": "Diff adds a React frontend with Internet Identity login flow, lobby/matchmaking/table screens, React Query polling, a disclaimer modal, and a Motoko backend skeleton for profiles/queue/tables. Several core gameplay, persistence, and matchmaking-cancel requirements are not evidenced in the diff (backend is truncated and appears incomplete). Some unrequested admin/access-control tooling and branding text were added.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "On first login, a player profile is created automatically; player coin balance persists (backend) across refreshes/upgrades; profile includes principal+display name and virtual coin balance.",
+      "reason": "Backend shows a getOrCreateProfile helper but no clear call path that creates a profile on first login; getCallerUserProfile only returns existing profile. Also state is held in non-stable in-memory structures (Map/vars), so persistence across canister upgrade/restart is not evidenced.",
+      "evidence": [
+        "backend/main.mo (userProfiles = Map.empty<Principal, UserProfile>(); no stable state shown; getCallerUserProfile() returns userProfiles.get(caller); getOrCreateProfile() exists but not shown used for first-login auto creation)"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Cancel matchmaking removes the user from the public queue; no private table join/create methods.",
+      "reason": "Frontend cancel button only navigates back to lobby; no leave/cancel queue mutation is shown. Backend method for leaving queue is not evidenced in the summary.",
+      "evidence": [
+        "frontend/src/screens/MatchmakingScreen.tsx (handleCancel only calls onNavigateToLobby; no leaveQueue call)",
+        "frontend/src/hooks/useQueries.ts (has useJoinQueue but no leave/cancel queue mutation)",
+        "backend/main.mo (queue var exists but leave/cancel function not visible in provided portion)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Implement Teen Patti Classic rules: authoritative deck + deal 3 cards each, betting turns, Pack/See/Bet-Call/Raise/Show, compute winner using standard hand ranking, award pot, persist balance updates, and show hand history of key actions.",
+      "reason": "Backend diff portion defines table/status fields but does not evidence card/deck state, dealing, hand ranking, pot settlement logic, or strict action validation. Frontend 'hand history' is inferred from statuses only and does not show bet/raise/show events; action enablement is not based on backend-returned allowed actions.",
+      "evidence": [
+        "backend/main.mo (Table/TableView do not show any card/deck/hand structures in the visible portion; performAction/deal/winner ranking not evidenced in provided snippet)",
+        "frontend/src/components/table/HandHistoryPanel.tsx (history generated only from hasPacked/hasSeenCards; no bet/raise/show entries)",
+        "frontend/src/components/table/ActionBar.tsx (buttons not enabled/disabled based on backend-provided allowed actions; local checks only)",
+        "frontend/src/hooks/useQueries.ts (performAction(action: string) sends raw string; no schema for bet amounts/raise sizing or action validation returned)"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Backend game-state persistence/resilience: store tables/players/hands/queue in stable state; persist profiles/balances across upgrade/restart; inactivity timeout auto-pack and advance turn; table resolves if a player leaves.",
+      "reason": "Stable persistence is not evidenced: profiles, queue, and tables appear as non-stable variables/collections. Timeout/auto-pack is hinted by function name but implementation is truncated; table resolution on disconnect/leave is not evidenced.",
+      "evidence": [
+        "backend/main.mo (userProfiles Map, playerQueue var, tables var; no 'stable' storage shown in visible portion)",
+        "backend/main.mo (autoPackInactivePlayers() exists but is truncated; disconnect/leave handling not evidenced)"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Action buttons enabled/disabled based on the user’s allowed actions as returned by the backend.",
+      "reason": "No backend API returning 'allowed actions' is shown, and the frontend uses local heuristics (including comparing principal strings to displayName) rather than backend-provided permissions/action availability.",
+      "evidence": [
+        "frontend/src/components/table/ActionBar.tsx (derives isMyTurn and statuses locally; no allowed-actions field used)",
+        "frontend/src/hooks/useQueries.ts (no query for allowed actions; only getTable + performAction)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Admin/access-control initialization via secret URL parameter (caffeineAdminToken) and authorization mixins/permissions checks.",
+      "reason": "BuildRequest constrains auth to Internet Identity and does not request admin-token based access control bootstrapping or authorization framework integration.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts (getSecretParameter('caffeineAdminToken'); calls actor._initializeAccessControlWithSecret(adminToken))",
+        "backend/main.mo (imports MixinAuthorization, AccessControl; permission checks in getCallerUserProfile/saveCallerUserProfile)"
+      ]
+    },
+    {
+      "description": "Footer attribution/link to caffeine.ai.",
+      "reason": "Not requested by the BuildRequest requirements or acceptance criteria.",
+      "evidence": [
+        "frontend/src/components/layout/AppShell.tsx (footer includes link to https://caffeine.ai)"
+      ]
+    }
+  ],
+  "confidence": 0.68,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/auth/LoginPanel.tsx",
+    "frontend/src/components/layout/AppShell.tsx",
+    "frontend/src/components/lobby/BalanceBadge.tsx",
+    "frontend/src/components/profile/ProfileSetupDialog.tsx",
+    "frontend/src/components/responsible/DisclaimerGate.tsx",
+    "frontend/src/components/table/ActionBar.tsx",
+    "frontend/src/components/table/CardDisplay.tsx",
+    "frontend/src/components/table/HandHistoryPanel.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useDisclaimerAck.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/screens/LobbyScreen.tsx",
+    "frontend/src/screens/MatchmakingScreen.tsx",
+    "frontend/src/screens/TableScreen.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

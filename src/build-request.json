@@ -1,0 +1,177 @@
+{
+  "kind": "build_request",
+  "title": "Teen Patti-style online game with virtual coins and auto-matchmaking",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement Internet Identity login and a basic player profile (principal, display name) with persistent virtual-coin balance (no real-money features).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-12",
+          "msg-16"
+        ],
+        "quotes": [
+          "Teen Patti-style (virtual coins, auto-matchmaking)",
+          "1",
+          "Banana shuru karo"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in/out via Internet Identity.",
+        "On first login, a player profile is created automatically.",
+        "Player coin balance is stored in the backend and persists across refreshes.",
+        "All user-facing text is in English and clearly states 'Virtual coins only' (no cash value)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create an online auto-matchmaking flow for Teen Patti Classic that seats exactly 3 players per table using a public matchmaking queue (no private rooms/tables).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3",
+          "msg-6"
+        ],
+        "quotes": [
+          "So rupaye se entry auto matchmaking",
+          "ओटो मेच मेकिंग ओलनाइन तीन पत्ती गोल्ड जैसा न्यू aap",
+          "Online auto-matchmaking tables for Teen Patti (no private room/table option specified)."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can press a 'Play' button to enter matchmaking and see a 'Searching for players…' state.",
+        "When 3 players are available, a table is created and all 3 clients transition into the same game.",
+        "There is no UI or backend method for creating/joining private tables via code/link.",
+        "If a user cancels matchmaking, they are removed from the queue."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement Teen Patti Classic game rules with turn-based actions and a minimal, playable round: ante boot, deal 3 cards per player, betting turns, Pack (fold), See (view cards), Bet/Call/Raise, and Show to end the hand; determine winner and update virtual-coin balances accordingly.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-6"
+        ],
+        "quotes": [
+          "Teen Patti क्लासिक मोड",
+          "Teen Patti Classic gameplay mode (no variations confirmed)."
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new round automatically starts once a table is formed and all players are active.",
+        "Each player receives exactly 3 cards; the server is authoritative for the deck and deals.",
+        "Only the active player can act; invalid/out-of-turn actions are rejected by the backend.",
+        "At round end, winner is computed using standard Teen Patti hand ranking and the pot is awarded; balances update persistently.",
+        "A hand history panel shows key actions (bet/see/pack/show) for the current round."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add backend game-state persistence and resilience: store tables, players, hands, and matchmaking queue in stable state; handle disconnects/timeouts with simple rules (e.g., auto-pack after a configurable inactivity period).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-16"
+        ],
+        "quotes": [
+          "Teen Patti-style (virtual coins, auto-matchmaking)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If the canister upgrades/restarts (simulated by reload), existing profiles and coin balances remain intact.",
+        "Game tables and current hand state persist while the hand is in progress.",
+        "If a player is inactive beyond the timeout, the backend automatically packs them and advances the turn.",
+        "A table eventually resolves (ends the hand) even if a player leaves mid-hand."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Build the core frontend screens and flows: Login screen, Lobby (balance + Play), Matchmaking screen, and Game Table UI (players, pot, turn indicator, action buttons). Use React Query for data fetching and polling to reflect game updates (no WebSockets).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-16"
+        ],
+        "quotes": [
+          "Teen Patti-style (virtual coins, auto-matchmaking)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can navigate through Login → Lobby → Matchmaking → Table without dead-ends.",
+        "Table UI updates automatically as turns/actions happen (via polling).",
+        "Action buttons are enabled/disabled based on the user’s allowed actions as returned by the backend.",
+        "UI remains usable on mobile viewport widths (responsive layout)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Establish a distinct, coherent visual theme inspired by casino-card aesthetics but not copying Teen Patti Gold branding: choose a non-blue/non-purple palette, typography, and component styling, and apply consistently across all screens.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-8"
+        ],
+        "quotes": [
+          "तीन पत्ती गोल्ड जैसा नियों वर्चन",
+          "It just shows the *Teen Patti Gold* app page — but it doesn’t change anything about your build. I can make an app **similar in style**, but not identical"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Theme is consistent across Login, Lobby, Matchmaking, and Table screens.",
+        "No Teen Patti Gold logos, names, or copied UI assets are used.",
+        "Primary palette is not blue/purple-dominant (e.g., deep red + gold + dark felt green is acceptable)."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add basic responsible-use/disclaimer UI text: clearly state 'Virtual coins only, no real-money gambling' and include an '18+ only' disclaimer screen or modal acknowledgement before first play.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8",
+          "msg-16"
+        ],
+        "quotes": [
+          "Virtual coins only (safe)",
+          "Banana shuru karo"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Before first entering matchmaking, the user must acknowledge an 18+ and virtual-coins-only disclaimer.",
+        "Disclaimer copy is in English.",
+        "Acknowledgement is remembered for the logged-in user (persisted in backend profile or frontend storage)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must be a single Motoko actor (no additional backend services).",
+    "No real-money entry, deposits, withdrawals, or payments; virtual coins only.",
+    "No private tables/rooms (auto-matchmaking only).",
+    "No third-party authentication providers; only Internet Identity.",
+    "No WebSockets/real-time sockets; use polling via React Query.",
+    "Do not copy Teen Patti Gold branding, logos, or copyrighted assets; uploaded screenshot is reference only."
+  ],
+  "nonGoals": [
+    "Teen Patti variations (Joker, AK47, Muflis, etc.).",
+    "Rummy/Poker modes.",
+    "In-app purchases or Stripe integration.",
+    "Chat, push notifications, SMS/email, or social integrations.",
+    "Advanced anti-cheat or provably-fair cryptographic auditing beyond basic server-authoritative dealing."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Casino-style app logo with a gold border and abstract card motif (no text, no copied marks) (app-logo.dim_512x512.png)",
+      "Seamless green felt table texture with subtle pattern (table-felt.dim_1024x1024.png)",
+      "Set of 52 clean playing card faces in a modern flat style (card-deck-sprite.dim_2048x2048.png)",
+      "Poker chip set icons (red/green/black/gold) in a consistent illustrated style (chips-sprite.dim_1024x1024.png)"
+    ],
+    "edits": []
+  }
+}

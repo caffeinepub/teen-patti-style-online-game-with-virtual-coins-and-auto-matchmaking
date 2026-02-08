@@ -1,0 +1,17 @@
+{
+  "frontend/src/App.tsx": "Main application component managing authentication state, profile setup flow, and screen navigation (Login → Lobby → Matchmaking → Table) with ThemeProvider wrapper.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profiles, matchmaking queue, table state, game actions, and settings with proper invalidation.",
+  "frontend/src/hooks/useDisclaimerAck.ts": "Hook managing 18+ and virtual-coins disclaimer acknowledgement state persisted in localStorage per user principal.",
+  "frontend/src/components/auth/LoginPanel.tsx": "Login screen with Internet Identity integration, app logo, and clear virtual-coins messaging with corrected import paths.",
+  "frontend/src/components/profile/ProfileSetupDialog.tsx": "Modal dialog for first-time users to set their display name, shown only when profile is missing with corrected import paths.",
+  "frontend/src/components/layout/AppShell.tsx": "Shared layout wrapper with header (logo, balance, logout), main content area, and footer with caffeine.ai attribution with corrected import paths.",
+  "frontend/src/components/lobby/BalanceBadge.tsx": "Reusable component displaying user's virtual coin balance with coin icon and formatted number with corrected import paths.",
+  "frontend/src/components/responsible/DisclaimerGate.tsx": "Modal requiring users to acknowledge 18+ age and virtual-coins-only terms before first play with corrected import paths.",
+  "frontend/src/screens/LobbyScreen.tsx": "Main lobby screen showing game rules, boot amount, and Play button gated by disclaimer acknowledgement with corrected import paths.",
+  "frontend/src/screens/MatchmakingScreen.tsx": "Matchmaking screen displaying queue size, searching animation, and auto-navigation to table when matched with corrected import paths.",
+  "frontend/src/screens/TableScreen.tsx": "Game table UI showing all 3 players, pot, current bet, turn indicator, action bar, and hand history panel with corrected import paths and proper boolean type handling for isMe prop.",
+  "frontend/src/components/table/ActionBar.tsx": "Action buttons (See, Pack, Call, Raise, Show) enabled/disabled based on turn and game state with corrected import paths.",
+  "frontend/src/components/table/HandHistoryPanel.tsx": "Scrollable panel displaying key game events (packs, sees) for the current hand with corrected import paths.",
+  "frontend/src/components/table/CardDisplay.tsx": "Component rendering 3 cards per player (card backs for others, hidden/revealed for current user).",
+  "frontend/src/index.css": "Global styles with OKLCH color system using deep red primary (#C84), dark backgrounds, and gold accents for casino theme."
+}
