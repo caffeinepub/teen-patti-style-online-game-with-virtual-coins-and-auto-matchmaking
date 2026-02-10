@@ -8,6 +8,7 @@ import MatchmakingScreen from './screens/MatchmakingScreen';
 import TableScreen from './screens/TableScreen';
 import AppShell from './components/layout/AppShell';
 import { ThemeProvider } from 'next-themes';
+import { registerServiceWorker } from './pwa/registerServiceWorker';
 
 type AppScreen = 'lobby' | 'matchmaking' | 'table';
 
@@ -18,6 +19,13 @@ export default function App() {
 
   const isAuthenticated = !!identity;
   const showProfileSetup = isAuthenticated && !profileLoading && isFetched && userProfile === null;
+
+  // Register service worker on mount
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      registerServiceWorker();
+    }
+  }, []);
 
   // Reset to lobby when user logs out
   useEffect(() => {

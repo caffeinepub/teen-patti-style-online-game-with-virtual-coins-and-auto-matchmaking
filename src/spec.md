@@ -1,15 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Deliver a playable Teen Patti Classic online experience with Internet Identity login, virtual-coin balances, and auto-matchmaking into 3-player tables, using a distinct casino-card visual theme.
+**Goal:** Make the existing React web app PWA-installable and add Android Trusted Web Activity (TWA) packaging artifacts to build APK/AAB for the deployed web app URL.
 
 **Planned changes:**
-- Add Internet Identity sign-in/sign-out, auto-created player profile (principal, display name), and persistent virtual-coin balance (virtual coins only).
-- Implement an 18+ and “virtual coins only, no real-money gambling” disclaimer acknowledgement required before first matchmaking; remember per user.
-- Build public auto-matchmaking: Play → searching state → seat exactly 3 players at a table; allow cancel to leave queue; no private rooms.
-- Implement Teen Patti Classic round flow: boot/ante, server-authoritative shuffle/deal (3 cards each), turn-based actions (Pack, See, Bet/Call/Raise, Show), winner determination via standard hand ranking, pot award, persistent balance updates.
-- Add backend persistence/resilience for profiles, balances, matchmaking queue, tables, and in-progress hand state; handle inactivity via timeout with auto-pack and turn advancement; ensure hand resolves if someone disconnects.
-- Create core responsive frontend screens (Login, Lobby with balance + Play, Matchmaking, Table UI) with polling updates via React Query; enable/disable actions based on backend-allowed moves.
-- Apply a consistent casino-felt aesthetic that is not Teen Patti Gold branding and not blue/purple-dominant.
+- Add and serve a web app manifest (`manifest.webmanifest` or `manifest.json`) with required fields (name, short_name, start_url, standalone display, colors) and required icon sizes, and link it from `frontend/index.html` with appropriate meta tags (e.g., theme-color).
+- Add a service worker and register it from a non-immutable frontend file to provide basic offline support by caching the app shell/static assets, with safe update/unregister behavior during development.
+- Add an Android/TWA project (or equivalent build setup) to generate a debug APK and a release AAB targeting the correct start URL and standalone display mode.
+- Add `/.well-known/assetlinks.json` to frontend static assets for Digital Asset Links verification and include in-repo English documentation describing package/applicationId setup, signing key generation, APK/AAB build steps, and asset links verification.
+- Verify navigation/state behavior works within Android WebView/TWA context and ensure any new user-facing packaging/build text is English-only.
 
-**User-visible outcome:** Users can log in with Internet Identity, acknowledge an 18+ virtual-coins-only disclaimer, press Play to be auto-matched into a 3-player Teen Patti Classic table, play a complete minimal hand with turn-based actions, and see their virtual-coin balance persist across refreshes.
+**User-visible outcome:** The web app is installable as a PWA in Chrome (including basic offline loading), and the repo can build Android TWA APK/AAB artifacts that open the deployed web app URL with asset links support.

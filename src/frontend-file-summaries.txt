@@ -1,5 +1,5 @@
 {
-  "frontend/src/App.tsx": "Main application component managing authentication state, profile setup flow, and screen navigation (Login → Lobby → Matchmaking → Table) with ThemeProvider wrapper.",
+  "frontend/src/App.tsx": "Main application component managing authentication state, profile setup flow, screen navigation, and service worker registration on mount.",
   "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profiles, matchmaking queue, table state, game actions, and settings with proper invalidation.",
   "frontend/src/hooks/useDisclaimerAck.ts": "Hook managing 18+ and virtual-coins disclaimer acknowledgement state persisted in localStorage per user principal.",
   "frontend/src/components/auth/LoginPanel.tsx": "Login screen with Internet Identity integration, app logo, and clear virtual-coins messaging with corrected import paths.",
@@ -13,5 +13,21 @@
   "frontend/src/components/table/ActionBar.tsx": "Action buttons (See, Pack, Call, Raise, Show) enabled/disabled based on turn and game state with corrected import paths.",
   "frontend/src/components/table/HandHistoryPanel.tsx": "Scrollable panel displaying key game events (packs, sees) for the current hand with corrected import paths.",
   "frontend/src/components/table/CardDisplay.tsx": "Component rendering 3 cards per player (card backs for others, hidden/revealed for current user).",
-  "frontend/src/index.css": "Global styles with OKLCH color system using deep red primary (#C84), dark backgrounds, and gold accents for casino theme."
+  "frontend/src/index.css": "Global styles with OKLCH color system using deep red primary (#C84), dark backgrounds, and gold accents for casino theme.",
+  "frontend/index.html": "HTML entry point with PWA meta tags, manifest link, theme-color, and icon references for installability.",
+  "frontend/public/manifest.webmanifest": "PWA manifest with app metadata, standalone display mode, and icon declarations for 192x192 and 512x512 sizes.",
+  "frontend/public/sw.js": "Service worker implementing network-first caching strategy with offline fallback for static assets and app shell.",
+  "frontend/src/pwa/registerServiceWorker.ts": "Utility module to register/unregister service worker with update detection and safe production-only registration.",
+  "frontend/public/.well-known/assetlinks.json": "Digital Asset Links configuration for Android TWA verification (requires SHA-256 fingerprint replacement).",
+  "frontend/android-twa/README.md": "Comprehensive English documentation for TWA packaging including setup, key generation, building APK/AAB, and Play Store submission.",
+  "frontend/android-twa/build.gradle": "Root Gradle build configuration for Android TWA project with repository and plugin setup.",
+  "frontend/android-twa/settings.gradle": "Gradle settings defining project structure and dependency resolution for TWA wrapper.",
+  "frontend/android-twa/app/build.gradle": "App-level Gradle configuration with package name, SDK versions, and androidbrowserhelper dependency.",
+  "frontend/android-twa/app/src/main/AndroidManifest.xml": "Android manifest defining TWA activity, intent filters, asset link verification, and standalone display mode.",
+  "frontend/android-twa/app/src/main/java/com/teenpatti/virtualcoins/MainActivity.java": "Main Android activity extending LauncherActivity for TWA functionality.",
+  "frontend/android-twa/app/src/main/res/values/strings.xml": "Android string resources for app name and TWA URL configuration (requires URL replacement).",
+  "frontend/android-twa/app/src/main/res/values/colors.xml": "Android color resources for splash screen, status bar, and navigation bar matching app theme.",
+  "frontend/android-twa/app/proguard-rules.pro": "ProGuard rules to preserve androidbrowserhelper classes during release build optimization.",
+  "frontend/android-twa/gradle.properties": "Gradle properties enabling AndroidX and Jetifier for TWA project.",
+  "frontend/android-twa/SETUP_INSTRUCTIONS.md": "Quick setup guide with step-by-step instructions for configuring and building the Android TWA wrapper."
 }

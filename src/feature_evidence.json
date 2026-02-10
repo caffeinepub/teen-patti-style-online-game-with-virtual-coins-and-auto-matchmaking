@@ -2,13 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-implement-internet-identity-login-and-a-basic-player-profile-principal-display-name-with-persistent-virtual-coin-balance-no-real-money-features",
-      "featureTitle": "Implement Internet Identity login and a basic player profile (principal, display name) with persistent virtual-coin balance (no real-money features).",
+      "featureId": "feature-make-the-existing-react-web-app-installable-as-a-progressive-web-app-pwa-by-adding-a-web-app-manifest-required-icons-and-linking-them-from-the-html-entry-point",
+      "featureTitle": "Make the existing React web app installable as a Progressive Web App (PWA) by adding a web app manifest, required icons, and linking them from the HTML entry point.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/auth/LoginPanel.tsx",
-        "frontend/src/components/lobby/BalanceBadge.tsx",
-        "frontend/src/components/profile/ProfileSetupDialog.tsx"
+        "frontend/index.html",
+        "frontend/public/manifest.webmanifest"
       ],
       "components": [
         "authorization@4.0.0",
@@ -24,12 +22,12 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-create-an-online-auto-matchmaking-flow-for-teen-patti-classic-that-seats-exactly-3-players-per-table-using-a-public-matchmaking-queue-no-private-rooms-tables",
-      "featureTitle": "Create an online auto-matchmaking flow for Teen Patti Classic that seats exactly 3 players per table using a public matchmaking queue (no private rooms/tables).",
+      "featureId": "feature-add-a-service-worker-for-offline-capable-pwa-basics-at-minimum-cache-the-app-shell-and-static-assets-without-changing-any-immutable-frontend-hook-files",
+      "featureTitle": "Add a service worker for offline-capable PWA basics (at minimum: cache the app shell and static assets) without changing any immutable frontend hook files.",
       "files": [
+        "frontend/public/sw.js",
         "frontend/src/App.tsx",
-        "frontend/src/screens/LobbyScreen.tsx",
-        "frontend/src/screens/MatchmakingScreen.tsx"
+        "frontend/src/pwa/registerServiceWorker.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -45,13 +43,11 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-teen-patti-classic-game-rules-with-turn-based-actions-and-a-minimal-playable-round-ante-boot-deal-3-cards-per-player-betting-turns-pack-fold-see-view-cards-bet-call-raise-and-show-to-end-the-hand-determine-winner-and-update-virtual-coin-balances-accordingly",
-      "featureTitle": "Implement Teen Patti Classic game rules with turn-based actions and a minimal, playable round: ante boot, deal 3 cards per player, betting turns, Pack (fold), See (view cards), Bet/Call/Raise, and Show to end the hand; determine winner and update virtual-coin balances accordingly.",
+      "featureId": "feature-add-android-trusted-web-activity-twa-packaging-support-to-produce-both-an-apk-testing-and-aab-play-store-for-the-existing-deployed-web-app-url-including-digital-asset-links-setup",
+      "featureTitle": "Add Android Trusted Web Activity (TWA) packaging support to produce both an APK (testing) and AAB (Play Store) for the existing deployed web app URL, including Digital Asset Links setup.",
       "files": [
-        "frontend/src/components/table/ActionBar.tsx",
-        "frontend/src/components/table/CardDisplay.tsx",
-        "frontend/src/components/table/HandHistoryPanel.tsx",
-        "frontend/src/screens/TableScreen.tsx"
+        "frontend/android-twa/README.md",
+        "frontend/public/.well-known/assetlinks.json"
       ],
       "components": [
         "authorization@4.0.0",
@@ -67,11 +63,13 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-build-the-core-frontend-screens-and-flows-login-screen-lobby-balance-play-matchmaking-screen-and-game-table-ui-players-pot-turn-indicator-action-buttons-use-react-query-for-data-fetching-and-polling-to-reflect-game-updates-no-websockets",
-      "featureTitle": "Build the core frontend screens and flows: Login screen, Lobby (balance + Play), Matchmaking screen, and Game Table UI (players, pot, turn indicator, action buttons). Use React Query for data fetching and polling to reflect game updates (no WebSockets).",
+      "featureId": "feature-ensure-the-web-app-s-navigation-state-handling-works-correctly-inside-an-android-webview-twa-context-no-reliance-on-unsupported-browser-features-and-that-all-user-facing-text-related-to-packaging-build-instructions-is-in-english",
+      "featureTitle": "Ensure the web app’s navigation/state handling works correctly inside an Android WebView/TWA context (no reliance on unsupported browser features), and that all user-facing text related to packaging/build instructions is in English.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/layout/AppShell.tsx"
+        "frontend/android-twa/README.md",
+        "frontend/index.html",
+        "frontend/public/manifest.webmanifest",
+        "frontend/src/pwa/registerServiceWorker.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -82,48 +80,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-establish-a-distinct-coherent-visual-theme-inspired-by-casino-card-aesthetics-but-not-copying-teen-patti-gold-branding-choose-a-non-blue-non-purple-palette-typography-and-component-styling-and-apply-consistently-across-all-screens",
-      "featureTitle": "Establish a distinct, coherent visual theme inspired by casino-card aesthetics but not copying Teen Patti Gold branding: choose a non-blue/non-purple palette, typography, and component styling, and apply consistently across all screens.",
-      "files": [
-        "frontend/src/index.css",
-        "frontend/tailwind.config.js"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-basic-responsible-use-disclaimer-ui-text-clearly-state-virtual-coins-only-no-real-money-gambling-and-include-an-18-only-disclaimer-screen-or-modal-acknowledgement-before-first-play",
-      "featureTitle": "Add basic responsible-use/disclaimer UI text: clearly state 'Virtual coins only, no real-money gambling' and include an '18+ only' disclaimer screen or modal acknowledgement before first play.",
-      "files": [
-        "frontend/src/components/responsible/DisclaimerGate.tsx",
-        "frontend/src/hooks/useDisclaimerAck.ts",
-        "frontend/src/screens/LobbyScreen.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-7"
+        "REQ-4"
       ],
       "confidence": "high"
     }

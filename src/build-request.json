@@ -1,177 +1,95 @@
 {
   "kind": "build_request",
-  "title": "Teen Patti-style online game with virtual coins and auto-matchmaking",
+  "title": "Restart Android packaging: make the web app PWA-ready and add Trusted Web Activity (TWA) build artifacts for AAB + APK",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Implement Internet Identity login and a basic player profile (principal, display name) with persistent virtual-coin balance (no real-money features).",
-      "target": "both",
+      "text": "Make the existing React web app installable as a Progressive Web App (PWA) by adding a web app manifest, required icons, and linking them from the HTML entry point.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1",
-          "msg-12",
-          "msg-16"
+          "msg-1"
         ],
         "quotes": [
-          "Teen Patti-style (virtual coins, auto-matchmaking)",
-          "1",
-          "Banana shuru karo"
+          "Han theek hai Dobara Shuru kar do"
         ]
       },
       "acceptanceCriteria": [
-        "User can sign in/out via Internet Identity.",
-        "On first login, a player profile is created automatically.",
-        "Player coin balance is stored in the backend and persists across refreshes.",
-        "All user-facing text is in English and clearly states 'Virtual coins only' (no cash value)."
+        "A `manifest.webmanifest` (or `manifest.json`) exists under the frontend public/static assets and is served by the app.",
+        "`frontend/index.html` links the manifest and defines appropriate `theme-color`/app meta tags.",
+        "The manifest includes: name, short_name, start_url, display=standalone, background_color, theme_color, and at least one icon >= 192x192 and one icon >= 512x512.",
+        "Running the app in Chrome shows it as installable (no critical manifest errors)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Create an online auto-matchmaking flow for Teen Patti Classic that seats exactly 3 players per table using a public matchmaking queue (no private rooms/tables).",
-      "target": "both",
+      "text": "Add a service worker for offline-capable PWA basics (at minimum: cache the app shell and static assets) without changing any immutable frontend hook files.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2",
-          "msg-3",
-          "msg-6"
+          "msg-1"
         ],
         "quotes": [
-          "So rupaye se entry auto matchmaking",
-          "ओटो मेच मेकिंग ओलनाइन तीन पत्ती गोल्ड जैसा न्यू aap",
-          "Online auto-matchmaking tables for Teen Patti (no private room/table option specified)."
+          "Han theek hai Dobara Shuru kar do"
         ]
       },
       "acceptanceCriteria": [
-        "User can press a 'Play' button to enter matchmaking and see a 'Searching for players…' state.",
-        "When 3 players are available, a table is created and all 3 clients transition into the same game.",
-        "There is no UI or backend method for creating/joining private tables via code/link.",
-        "If a user cancels matchmaking, they are removed from the queue."
+        "A service worker file is present and registered from the frontend (e.g., from a non-immutable file such as `frontend/src/App.tsx` or a new utility module).",
+        "On first load, core static assets are cached; on refresh with the network disabled, the app shell still loads.",
+        "Service worker registration can be cleanly updated/unregistered during development (no infinite reload loops)."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Implement Teen Patti Classic game rules with turn-based actions and a minimal, playable round: ante boot, deal 3 cards per player, betting turns, Pack (fold), See (view cards), Bet/Call/Raise, and Show to end the hand; determine winner and update virtual-coin balances accordingly.",
-      "target": "both",
+      "text": "Add Android Trusted Web Activity (TWA) packaging support to produce both an APK (testing) and AAB (Play Store) for the existing deployed web app URL, including Digital Asset Links setup.",
+      "target": "unknown",
       "source": {
         "messageIds": [
-          "msg-4",
-          "msg-6"
+          "msg-1"
         ],
         "quotes": [
-          "Teen Patti क्लासिक मोड",
-          "Teen Patti Classic gameplay mode (no variations confirmed)."
+          "Han theek hai Dobara Shuru kar do"
         ]
       },
       "acceptanceCriteria": [
-        "A new round automatically starts once a table is formed and all players are active.",
-        "Each player receives exactly 3 cards; the server is authoritative for the deck and deals.",
-        "Only the active player can act; invalid/out-of-turn actions are rejected by the backend.",
-        "At round end, winner is computed using standard Teen Patti hand ranking and the pot is awarded; balances update persistently.",
-        "A hand history panel shows key actions (bet/see/pack/show) for the current round."
+        "Repository includes a dedicated Android/TWA project directory (or equivalent build configuration) that can generate both debug APK and release AAB for the web app URL.",
+        "A `/.well-known/assetlinks.json` file is added to the frontend static assets so it can be served from the app origin.",
+        "Documentation is included in-repo describing how to: set applicationId/package name, generate signing keys, build APK, build AAB, and verify asset links.",
+        "The TWA configuration uses `displayMode: standalone` (or equivalent) and points to the correct start URL."
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Add backend game-state persistence and resilience: store tables, players, hands, and matchmaking queue in stable state; handle disconnects/timeouts with simple rules (e.g., auto-pack after a configurable inactivity period).",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-16"
-        ],
-        "quotes": [
-          "Teen Patti-style (virtual coins, auto-matchmaking)"
-        ]
-      },
-      "acceptanceCriteria": [
-        "If the canister upgrades/restarts (simulated by reload), existing profiles and coin balances remain intact.",
-        "Game tables and current hand state persist while the hand is in progress.",
-        "If a player is inactive beyond the timeout, the backend automatically packs them and advances the turn.",
-        "A table eventually resolves (ends the hand) even if a player leaves mid-hand."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Build the core frontend screens and flows: Login screen, Lobby (balance + Play), Matchmaking screen, and Game Table UI (players, pot, turn indicator, action buttons). Use React Query for data fetching and polling to reflect game updates (no WebSockets).",
+      "text": "Ensure the web app’s navigation/state handling works correctly inside an Android WebView/TWA context (no reliance on unsupported browser features), and that all user-facing text related to packaging/build instructions is in English.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-16"
+          "msg-1"
         ],
         "quotes": [
-          "Teen Patti-style (virtual coins, auto-matchmaking)"
+          "Use English for any user-facing text in the build request."
         ]
       },
       "acceptanceCriteria": [
-        "User can navigate through Login → Lobby → Matchmaking → Table without dead-ends.",
-        "Table UI updates automatically as turns/actions happen (via polling).",
-        "Action buttons are enabled/disabled based on the user’s allowed actions as returned by the backend.",
-        "UI remains usable on mobile viewport widths (responsive layout)."
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Establish a distinct, coherent visual theme inspired by casino-card aesthetics but not copying Teen Patti Gold branding: choose a non-blue/non-purple palette, typography, and component styling, and apply consistently across all screens.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1",
-          "msg-8"
-        ],
-        "quotes": [
-          "तीन पत्ती गोल्ड जैसा नियों वर्चन",
-          "It just shows the *Teen Patti Gold* app page — but it doesn’t change anything about your build. I can make an app **similar in style**, but not identical"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Theme is consistent across Login, Lobby, Matchmaking, and Table screens.",
-        "No Teen Patti Gold logos, names, or copied UI assets are used.",
-        "Primary palette is not blue/purple-dominant (e.g., deep red + gold + dark felt green is acceptable)."
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Add basic responsible-use/disclaimer UI text: clearly state 'Virtual coins only, no real-money gambling' and include an '18+ only' disclaimer screen or modal acknowledgement before first play.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-8",
-          "msg-16"
-        ],
-        "quotes": [
-          "Virtual coins only (safe)",
-          "Banana shuru karo"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Before first entering matchmaking, the user must acknowledge an 18+ and virtual-coins-only disclaimer.",
-        "Disclaimer copy is in English.",
-        "Acknowledgement is remembered for the logged-in user (persisted in backend profile or frontend storage)."
+        "The app launches and remains functional when opened in an in-app browser context (no hard dependency on browser UI chrome).",
+        "No new user-facing UI strings are introduced in languages other than English as part of the packaging/PWA changes.",
+        "Any new setup/build README or on-screen setup guidance added for Android packaging is written in English."
       ]
     }
   ],
   "constraints": [
-    "Backend must be a single Motoko actor (no additional backend services).",
-    "No real-money entry, deposits, withdrawals, or payments; virtual coins only.",
-    "No private tables/rooms (auto-matchmaking only).",
-    "No third-party authentication providers; only Internet Identity.",
-    "No WebSockets/real-time sockets; use polling via React Query.",
-    "Do not copy Teen Patti Gold branding, logos, or copyrighted assets; uploaded screenshot is reference only."
+    "Do not edit files under `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, or anything in `frontend/src/components/ui` (compose instead).",
+    "Backend must remain a single Motoko actor in `backend/main.mo`; only create `backend/migration.mo` if a stable-state upgrade is required (not expected for Android packaging).",
+    "Do not introduce real-money gambling or payments; the app remains virtual-coins only."
   ],
   "nonGoals": [
-    "Teen Patti variations (Joker, AK47, Muflis, etc.).",
-    "Rummy/Poker modes.",
-    "In-app purchases or Stripe integration.",
-    "Chat, push notifications, SMS/email, or social integrations.",
-    "Advanced anti-cheat or provably-fair cryptographic auditing beyond basic server-authoritative dealing."
+    "Implementing native Android features beyond a TWA wrapper (e.g., push notifications, native storage integrations, deep native UI).",
+    "Adding third-party authentication beyond Internet Identity.",
+    "Adding real-time WebSocket-based updates."
   ],
   "imageRequirements": {
-    "required": [
-      "Casino-style app logo with a gold border and abstract card motif (no text, no copied marks) (app-logo.dim_512x512.png)",
-      "Seamless green felt table texture with subtle pattern (table-felt.dim_1024x1024.png)",
-      "Set of 52 clean playing card faces in a modern flat style (card-deck-sprite.dim_2048x2048.png)",
-      "Poker chip set icons (red/green/black/gold) in a consistent illustrated style (chips-sprite.dim_1024x1024.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }
